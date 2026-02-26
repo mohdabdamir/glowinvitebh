@@ -444,55 +444,194 @@
         }
 
         /* --- 11. Gallery Section --- */
-        #gallery { background: rgba(255,255,255,0.3); }
-        
-        #gallery .section-title { -webkit-text-fill-color: initial; color: var(--primary-color); }
+        #gallery { 
+            background: rgba(255,255,255,0.3); 
+        }
+                
+        #gallery .section-title { 
+            -webkit-text-fill-color: initial; 
+            color: var(--primary-color); 
+        }
 
+        /* Gallery Container */
+        .gallery-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            margin-top: 30px;
+        }
+
+        /* Horizontal Scroll Container */
         .gallery-scroll {
             display: flex;
             gap: 20px;
             overflow-x: auto;
-            padding-bottom: 30px;
-            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            padding-bottom: 15px;
             -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-color) #f1f1f1;
         }
 
-        .gallery-scroll::-webkit-scrollbar { height: 8px; }
-        .gallery-scroll::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 4px; }
+        /* Scrollbar Styling */
+        .gallery-scroll::-webkit-scrollbar {
+            height: 8px;
+        }
 
+        .gallery-scroll::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .gallery-scroll::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+
+        .gallery-scroll::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary-color);
+        }
+
+        /* Gallery Item - Each video with its title */
         .gallery-item {
-            min-width: 250px;
-            height: 450px; /* Instagram Story Aspect Ratio approx */
-            scroll-snap-align: center;
-            border-radius: 20px;
-            overflow: hidden;
-            position: relative;
-            cursor: pointer;
-            box-shadow: var(--glass-shadow);
-        }
-
-        .gallery-placeholder {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.6s ease;
-        }
-
-        .gallery-item:hover .gallery-placeholder { transform: scale(1.1); }
-
-        .gallery-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
-            opacity: 0;
-            transition: var(--transition-smooth);
+            flex: 0 0 300px;
             display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            padding: 20px;
+            flex-direction: column;
+            gap: 12px;
         }
 
-        .gallery-item:hover .gallery-overlay { opacity: 1; }
+        /* Video Player */
+        .gallery-item video {
+            width: 300px;
+            height: 533px;
+            object-fit: cover;
+            border-radius: 16px;
+            box-shadow: var(--glass-shadow);
+            background: #000;
+            cursor: pointer;
+        }
+
+        /* Title Container - Below the video */
+        .gallery-title {
+            text-align: center;
+            padding: 5px 0;
+        }
+
+        .gallery-title h3 {
+            color: var(--text-dark);
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Fade Effects for Scroll Indication */
+        .gallery-wrapper::before,
+        .gallery-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 40px;
+            pointer-events: none;
+            z-index: 2;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-wrapper::before {
+            right: 0;
+            background: linear-gradient(to left, rgba(255,255,255,0.3), transparent);
+        }
+
+        .gallery-wrapper::after {
+            left: 0;
+            background: linear-gradient(to right, rgba(255,255,255,0.3), transparent);
+        }
+
+        .gallery-wrapper:not(.at-end)::before {
+            opacity: 1;
+        }
+
+        .gallery-wrapper:not(.at-start)::after {
+            opacity: 1;
+        }
+
+        /* Tablet Devices */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .gallery-item {
+                flex: 0 0 280px;
+            }
+            
+            .gallery-item video {
+                width: 280px;
+                height: 498px;
+            }
+        }
+
+        /* Mobile Devices */
+        @media (max-width: 768px) {
+            .gallery-wrapper {
+                padding: 0 5px;
+            }
+            
+            .gallery-scroll {
+                gap: 15px;
+                padding-bottom: 20px;
+            }
+            
+            .gallery-item {
+                flex: 0 0 85%;
+                max-width: 300px;
+            }
+            
+            .gallery-item video {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 9/16;
+                border-radius: 12px;
+            }
+            
+            .gallery-title h3 {
+                font-size: 0.9rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                padding: 0 5px;
+            }
+            
+            /* Hide scrollbar for cleaner look */
+            .gallery-scroll {
+                scrollbar-width: none;
+            }
+            
+            .gallery-scroll::-webkit-scrollbar {
+                display: none;
+            }
+        }
+
+        /* Small Mobile Devices */
+        @media (max-width: 480px) {
+            .gallery-item {
+                flex: 0 0 90%;
+            }
+            
+            .gallery-title h3 {
+                font-size: 0.85rem;
+            }
+        }
+
+        /* Landscape Mode on Mobile */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .gallery-item {
+                flex: 0 0 45%;
+                max-width: 350px;
+            }
+            
+            .gallery-item video {
+                aspect-ratio: 16/9;
+            }
+        }
 
         /* --- 12. Socials & Footer --- */
         #socials { text-align: center; }
@@ -574,232 +713,6 @@
             .hero-content { padding: 30px 20px; margin: 0 10px; }
             .section-title { font-size: 2rem; }
         }
-
-        /* Gallery container styling */
-        .gallery-wrapper {
-            position: relative;
-            overflow: hidden;
-            width: 100%;
-        }
-
-        .gallery-scroll {
-            display: flex;
-            gap: 20px;
-            overflow-x: auto;
-            scroll-behavior: smooth;
-            scrollbar-width: none;
-        }
-
-        .gallery-scroll::-webkit-scrollbar {
-            display: none;
-        }
-
-        .gallery-item {
-            flex: 0 0 300px;   /* fixed width */
-        }
-
-        .gallery-item {
-            position: relative;
-            width: 300px;
-            height: 533px; /* Instagram Story dimensions */
-            overflow: hidden;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        }
-
-        .gallery-video {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;   /* instead of cover */
-            background: black;     /* optional, better fullscreen look */
-        }
-
-        .gallery-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0, 0, 0, 0.5);
-            color: white;
-            padding: 10px;
-            text-align: center;
-            font-size: 18px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .gallery-item:hover .gallery-overlay {
-            opacity: 1;
-        }
-
-        /* Ensure the gallery scroll has smooth transition effects */
-        .reveal {
-            transition: transform 0.5s ease-in-out;
-        }
-
-        /* Add responsiveness */
-        @media (max-width: 768px) {
-            .gallery-item {
-                width: 100%;
-                height: auto;
-            }
-        }
-
-        .gallery-overlay {
-            pointer-events: none;
-        }
-
-        .gallery-wrapper:fullscreen .gallery-btn {
-            display: none;
-        }
-
-        /* Mobile Responsive Gallery Improvements */
-        @media (max-width: 768px) {
-            .gallery-wrapper {
-                padding: 0 10px;
-                width: 100%;
-                overflow: hidden;
-            }
-
-            .gallery-scroll {
-                display: flex;
-                gap: 15px;
-                overflow-x: auto;
-                scroll-snap-type: x mandatory;
-                -webkit-overflow-scrolling: touch;
-                padding: 10px 5px 20px 5px;
-                margin: 0 -5px;
-                scrollbar-width: thin;
-                scrollbar-color: var(--primary-color) #f0f0f0;
-            }
-
-            .gallery-item {
-                flex: 0 0 85%;
-                max-width: 300px;
-                height: auto;
-                aspect-ratio: 9/16;
-                scroll-snap-align: center;
-                margin-right: 5px;
-            }
-
-            .gallery-item:last-child {
-                margin-left: 5px;
-            }
-
-            .gallery-video {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                border-radius: 16px;
-            }
-
-            .gallery-overlay {
-                padding: 8px;
-                font-size: 14px;
-                background: rgba(0, 0, 0, 0.6);
-                backdrop-filter: blur(5px);
-                border-radius: 0 0 16px 16px;
-            }
-
-            .gallery-overlay h3 {
-                font-size: 14px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                max-width: 100%;
-            }
-
-            /* Hide scrollbar for cleaner look on some browsers */
-            .gallery-scroll::-webkit-scrollbar {
-                height: 4px;
-            }
-
-            .gallery-scroll::-webkit-scrollbar-track {
-                background: #f0f0f0;
-                border-radius: 10px;
-            }
-
-            .gallery-scroll::-webkit-scrollbar-thumb {
-                background: var(--primary-color);
-                border-radius: 10px;
-            }
-        }
-
-        /* Small mobile devices */
-        @media (max-width: 480px) {
-            .gallery-item {
-                flex: 0 0 90%;
-                max-width: 280px;
-            }
-
-            .gallery-overlay h3 {
-                font-size: 13px;
-            }
-        }
-
-        /* Landscape mode on mobile */
-        @media (max-width: 768px) and (orientation: landscape) {
-            .gallery-item {
-                flex: 0 0 50%;
-                max-width: 300px;
-                aspect-ratio: 16/9;
-            }
-        }
-
-        /* Tablet devices */
-        @media (min-width: 769px) and (max-width: 1024px) {
-            .gallery-item {
-                flex: 0 0 45%;
-                max-width: 350px;
-            }
-        }
-
-        /* Improve touch scrolling indicators */
-        .gallery-scroll {
-            scroll-behavior: smooth;
-        }
-
-        /* Add fade edges to indicate more content */
-        .gallery-wrapper {
-            position: relative;
-        }
-
-        .gallery-wrapper::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            width: 30px;
-            background: linear-gradient(to left, transparent, rgba(255,255,255,0.1));
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .gallery-wrapper::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            width: 30px;
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.1));
-            pointer-events: none;
-            z-index: 2;
-            opacity: 1;
-        }
-
-        /* Show fade effect only when there's more content to scroll */
-        .gallery-wrapper:not(.at-start)::after {
-            opacity: 1;
-        }
-
-        .gallery-wrapper.at-end::before {
-            opacity: 0;
-        }
-
-
 
         /* Packages Mobile Responsive */
         @media (max-width: 768px) {
@@ -984,67 +897,12 @@
 
 
         /* Gallery overlay behavior */
-        .gallery-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(5px);
-            color: white;
-            padding: 10px;
-            text-align: center;
-            font-size: 18px;
-            opacity: 1;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            border-radius: 0 0 16px 16px;
-            pointer-events: none;
-            z-index: 2;
-        }
+        
 
-        .gallery-item {
-            position: relative;
-            width: 300px;
-            height: 533px;
-            overflow: hidden;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Hide overlay when video is playing */
-        .gallery-item.playing .gallery-overlay {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        /* Show overlay on hover when not playing */
-        .gallery-item:not(.playing):hover .gallery-overlay {
-            opacity: 1;
-        }
+        
 
         /* Mobile specific overlay styles */
-        @media (max-width: 768px) {
-            .gallery-overlay {
-                padding: 8px;
-                font-size: 14px;
-                background: rgba(0, 0, 0, 0.7);
-                backdrop-filter: blur(5px);
-            }
-            
-            .gallery-overlay h3 {
-                font-size: 14px;
-                margin: 0;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-            
-            /* Always show overlay when video is paused on mobile */
-            .gallery-item:not(.playing) .gallery-overlay {
-                opacity: 1;
-                visibility: visible;
-            }
-        }
+        
     </style>
 </head>
 
@@ -1336,21 +1194,21 @@ slider.addEventListener('scroll', () => {
                 <div class="gallery-scroll" id="gallerySlider">
                     <div class="gallery-item">
                         <video class="gallery-video" controls preload="metadata">
-                            <source src="1.mp4" type="video/mp4">
+                            <source src="Videos/1.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
-                        <div class="gallery-overlay">
-                            <h3 style="color:white;">فندق الدبلومات - قاعة الفنار</h3>
+                        <div class="gallery-title">
+                            <h3>فندق الدبلومات - قاعة الفنار</h3>
                         </div>
                     </div>
 
                     <div class="gallery-item">
                         <video class="gallery-video" controls preload="metadata">
-                            <source src="2.mp4" type="video/mp4">
+                            <source src="Videos/2.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
-                        <div class="gallery-overlay">
-                            <h3 style="color:white;">قاعة الحد الأهلية</h3>
+                        <div class="gallery-title">
+                            <h3>قاعة الحد الأهلية</h3>
                         </div>
                     </div>
 
@@ -1359,8 +1217,8 @@ slider.addEventListener('scroll', () => {
                             <source src="Videos/3.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
-                        <div class="gallery-overlay">
-                            <h3 style="color:white;">قاعة أنوشة</h3>
+                        <div class="gallery-title">
+                            <h3>قاعة أنوشة</h3>
                         </div>
                     </div>
 
@@ -1369,8 +1227,8 @@ slider.addEventListener('scroll', () => {
                             <source src="Videos/4.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
-                        <div class="gallery-overlay">
-                            <h3 style="color:white;">فندق الدبلومات - قاعة السفراء</h3>
+                        <div class="gallery-title">
+                            <h3>فندق الدبلومات - قاعة السفراء</h3>
                         </div>
                     </div>
 
@@ -1379,8 +1237,8 @@ slider.addEventListener('scroll', () => {
                             <source src="Videos/5.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
-                        <div class="gallery-overlay">
-                            <h3 style="color:white;">قاعة الحد الأهلية</h3>
+                        <div class="gallery-title">
+                            <h3>قاعة الحد الأهلية</h3>
                         </div>
                     </div>
 
@@ -1389,8 +1247,8 @@ slider.addEventListener('scroll', () => {
                             <source src="Videos/6.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
-                        <div class="gallery-overlay">
-                            <h3 style="color:white;">فندق سوليمار</h3>
+                        <div class="gallery-title">
+                            <h3>فندق سوليمار</h3>
                         </div>
                     </div>
 
@@ -1399,8 +1257,8 @@ slider.addEventListener('scroll', () => {
                             <source src="Videos/7.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
-                        <div class="gallery-overlay">
-                            <h3 style="color:white;">حفلة منزلية</h3>
+                        <div class="gallery-title">
+                            <h3>حفلة منزلية</h3>
                         </div>
                     </div>
 
@@ -1409,8 +1267,8 @@ slider.addEventListener('scroll', () => {
                             <source src="Videos/8.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
-                        <div class="gallery-overlay">
-                            <h3 style="color:white;">فندق الموفنبيك</h3>
+                        <div class="gallery-title">
+                            <h3>فندق الموفنبيك</h3>
                         </div>
                     </div>
 
@@ -1419,8 +1277,8 @@ slider.addEventListener('scroll', () => {
                             <source src="Videos/9.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
-                        <div class="gallery-overlay">
-                            <h3 style="color:white;">قاعة ذا هفن المحرق</h3>
+                        <div class="gallery-title">
+                            <h3>قاعة ذا هفن المحرق</h3>
                         </div>
                     </div>
 
@@ -1429,8 +1287,8 @@ slider.addEventListener('scroll', () => {
                             <source src="Videos/10.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
-                        <div class="gallery-overlay">
-                            <h3 style="color:white;">قاعة البوجيرية</h3>
+                        <div class="gallery-title">
+                            <h3>قاعة البوجيرية</h3>
                         </div>
                     </div>
                 </div>
@@ -1604,5 +1462,4 @@ window.addEventListener('scroll', () => {
 });
 </script>
 </body>
-
 </html>
