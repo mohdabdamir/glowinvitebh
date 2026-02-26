@@ -1,0 +1,1607 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glow Invite & Weddings Security</title>
+    
+    <!-- Google Fonts: Cairo -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        /* --- 1. Design System & Variables (Requested Colors) --- */
+        :root {
+            --primary-color: #4169e1;
+            --secondary-color: #9bb4ff;
+            --accent-white: rgba(255, 255, 255, 0.85);
+            --accent-grey: rgba(255, 255, 255, 0.4);
+            --text-dark: #1f2937;
+            --text-light: #f9fafb;
+            --glass-bg: rgba(255, 255, 255, 0.65); /* Slightly more transparent for modern glass */
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --glass-shadow: 0 8px 32px 0 rgba(65, 105, 225, 0.15); /* Tinted shadow with primary color */
+            --card-hover-shadow: 0 20px 40px rgba(65, 105, 225, 0.25);
+            
+            --transition-smooth: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* --- 2. Global Reset & Base --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            outline: none;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            color: var(--text-dark);
+            background-color: #f0f4f8;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Dynamic Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 10% 20%, var(--secondary-color) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 80%, var(--primary-color) 0%, transparent 40%);
+            z-index: -2;
+            animation: pulseBackground 10s infinite alternate;
+        }
+
+        @keyframes pulseBackground {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.1); opacity: 1; }
+        }
+
+        /* Noise Texture Overlay */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; border-radius: 16px; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--secondary-color); }
+
+        /* --- 3. Utility & Animations --- */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-padding { padding: 100px 0; }
+        
+        .text-center { text-align: center; }
+        
+        /* Reveal on Scroll Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: var(--transition-smooth);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: var(--primary-color);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .section-subtitle {
+            color: #555;
+            font-size: 1.2rem;
+            margin-bottom: 4rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* --- 4. Buttons --- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 35px;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+            border: none;
+            font-size: 1.1rem;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 0%; height: 100%;
+            background: var(--secondary-color);
+            z-index: -1;
+            transition: var(--transition-smooth);
+        }
+
+        .btn:hover::before { width: 100%; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(65, 105, 225, 0.3); }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 15px rgba(65, 105, 225, 0.4);
+        }
+
+        /* .btn-whatsapp {
+            background: #25D366;
+            color: white;
+            gap: 10px;
+        }
+        
+        .btn-whatsapp:hover { background: #128C7E; }
+        .btn-whatsapp::before { background: #075E54; } Hover effect override */
+
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: #25D366;
+            color: #ffffff;
+            font-weight: 600;
+            padding: 12px 22px;
+            border-radius: 30px;
+            text-decoration: none;
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.25);
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-btn:hover {
+            background-color: #1ebe5d;
+            transform: translateY(-2px);
+        }
+
+        .whatsapp-icon {
+            font-size: 18px;
+        }
+
+        /* --- 5. Glass Cards (Core UI) --- */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            border-radius: 24px;
+        }
+
+        /* --- 6. Header --- */
+        header {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1200px;
+            z-index: 1000;
+            padding: 15px 30px;
+            border-radius: 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition-smooth);
+        }
+
+        header.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            top: 0;
+            width: 100%;
+            border-radius: 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a {
+            font-weight: 600;
+            color: var(--text-dark);
+            position: relative;
+            padding: 5px 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            right: 0;
+            background: var(--primary-color);
+            transition: var(--transition-smooth);
+        }
+        .nav-links a:hover::after { width: 100%; }
+
+        .mobile-toggle { display: none; font-size: 1.8rem; cursor: pointer; color: var(--primary-color); }
+
+        /* --- 7. Hero Section --- */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding-top: 80px;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            padding: 60px;
+            border-radius: 40px;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        
+        .hero-title span { color: var(--secondary-color); }
+
+        .hero-slogan {
+            font-size: 1.5rem;
+            color: #555;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        /* --- 8. About Section --- */
+        #about { position: relative; }
+        
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-text h3 { font-size: 2.2rem; color: var(--primary-color); margin-bottom: 25px; }
+        .about-text p { font-size: 1.1rem; color: #444; margin-bottom: 20px; line-height: 1.8; }
+
+        .about-visual {
+            position: relative;
+        }
+        
+        .about-visual img {
+            width: 100%;
+            border-radius: 30px;
+            box-shadow: 20px 20px 0 var(--secondary-color);
+            transition: var(--transition-smooth);
+        }
+        
+        .about-visual:hover img {
+            transform: scale(1.02) translate(-5px, -5px);
+            box-shadow: 10px 10px 0 var(--primary-color);
+        }
+
+        /* --- 9. Services Section --- */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            padding: 40px 30px;
+            text-align: center;
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+            background: rgba(255,255,255,0.5);
+        }
+
+        .service-card:hover {
+            transform: translateY(-15px);
+            box-shadow: var(--card-hover-shadow);
+            background: rgba(255,255,255,0.9);
+        }
+
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 25px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transform: rotate(45deg);
+            transition: var(--transition-smooth);
+        }
+
+        .service-card:hover .service-icon { transform: rotate(0deg) scale(1.1); }
+
+        .service-icon svg { transform: rotate(-45deg); width: 40px; height: 40px; fill: currentColor; }
+        .service-card:hover .service-icon svg { transform: rotate(0deg); }
+
+        .service-card h3 { margin-bottom: 15px; color: var(--text-dark); font-size: 1.4rem; }
+        .service-card p { color: #666; font-size: 0.95rem; line-height: 1.6; }
+
+        /* --- 10. Packages Section --- */
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            gap: 30px;
+        }
+
+        .package-card {
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            transition: var(--transition-smooth);
+            display: flex;
+            flex-direction: column;
+            border-top: 4px solid transparent;
+        }
+
+        .package-card:hover {
+            transform: scale(1.03);
+            border-color: var(--primary-color);
+        }
+
+        .package-card.diamond {
+            background: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(155, 180, 255, 0.2) 100%);
+            border: 2px solid var(--secondary-color);
+            transform: scale(1.05);
+            z-index: 2;
+        }
+
+        .package-card.diamond:hover { transform: scale(1.08); }
+
+        .package-badge {
+            position: absolute;
+            top: -15px; left: 50%; transform: translateX(-50%);
+            background: var(--primary-color);
+            color: white;
+            padding: 5px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            box-shadow: 0 5px 15px rgba(65, 105, 225, 0.3);
+        }
+
+        .package-name { font-size: 2rem; font-weight: 800; color: var(--primary-color); margin-bottom: 20px; }
+
+        .package-features {
+            list-style: none;
+            margin-bottom: 30px;
+            text-align: right;
+            flex-grow: 1;
+        }
+
+        .package-features li {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #444;
+        }
+
+        .package-features li::before {
+            content: '✔';
+            color: var(--secondary-color);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .price-note {
+            font-size: 0.9rem;
+            color: #888;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed rgba(0,0,0,0.1);
+        }
+
+        /* --- 11. Gallery Section --- */
+        #gallery { background: rgba(255,255,255,0.3); }
+        
+        #gallery .section-title { -webkit-text-fill-color: initial; color: var(--primary-color); }
+
+        .gallery-scroll {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding-bottom: 30px;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .gallery-scroll::-webkit-scrollbar { height: 8px; }
+        .gallery-scroll::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 4px; }
+
+        .gallery-item {
+            min-width: 250px;
+            height: 450px; /* Instagram Story Aspect Ratio approx */
+            scroll-snap-align: center;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            box-shadow: var(--glass-shadow);
+        }
+
+        .gallery-placeholder {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .gallery-item:hover .gallery-placeholder { transform: scale(1.1); }
+
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+            opacity: 0;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .gallery-item:hover .gallery-overlay { opacity: 1; }
+
+        /* --- 12. Socials & Footer --- */
+        #socials { text-align: center; }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .social-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transition: var(--transition-smooth);
+        }
+
+        .social-icon:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-8px) rotate(10deg);
+        }
+        
+        .social-icon svg { width: 32px; height: 32px; fill: currentColor; }
+
+        footer {
+            background: var(--primary-color);
+            color: white;
+            padding: 60px 0 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Decorative circle in footer */
+        footer::before {
+            content: '';
+            position: absolute;
+            top: -50px; right: -50px;
+            width: 200px; height: 200px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+
+        .footer-slogan { font-size: 2rem; font-weight: 700; margin-bottom: 30px; }
+
+        /* --- 13. Responsive Design --- */
+        @media (max-width: 992px) {
+            .hero-title { font-size: 2.8rem; }
+            .about-grid { grid-template-columns: 1fr; }
+            .package-card.diamond { transform: scale(1); }
+            .package-card.diamond:hover { transform: scale(1.02); }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                padding: 30px;
+                border-radius: 20px;
+                box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            }
+            .nav-links.active { display: flex; }
+            .mobile-toggle { display: block; }
+            
+            header { padding: 10px 20px; width: 95%; }
+            .hero-content { padding: 30px 20px; margin: 0 10px; }
+            .section-title { font-size: 2rem; }
+        }
+
+        /* Gallery container styling */
+        .gallery-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .gallery-scroll {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+        }
+
+        .gallery-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .gallery-item {
+            flex: 0 0 300px;   /* fixed width */
+        }
+
+        .gallery-item {
+            position: relative;
+            width: 300px;
+            height: 533px; /* Instagram Story dimensions */
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .gallery-video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;   /* instead of cover */
+            background: black;     /* optional, better fullscreen look */
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-size: 18px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        /* Ensure the gallery scroll has smooth transition effects */
+        .reveal {
+            transition: transform 0.5s ease-in-out;
+        }
+
+        /* Add responsiveness */
+        @media (max-width: 768px) {
+            .gallery-item {
+                width: 100%;
+                height: auto;
+            }
+        }
+
+        .gallery-overlay {
+            pointer-events: none;
+        }
+
+        .gallery-wrapper:fullscreen .gallery-btn {
+            display: none;
+        }
+
+        /* Mobile Responsive Gallery Improvements */
+        @media (max-width: 768px) {
+            .gallery-wrapper {
+                padding: 0 10px;
+                width: 100%;
+                overflow: hidden;
+            }
+
+            .gallery-scroll {
+                display: flex;
+                gap: 15px;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                padding: 10px 5px 20px 5px;
+                margin: 0 -5px;
+                scrollbar-width: thin;
+                scrollbar-color: var(--primary-color) #f0f0f0;
+            }
+
+            .gallery-item {
+                flex: 0 0 85%;
+                max-width: 300px;
+                height: auto;
+                aspect-ratio: 9/16;
+                scroll-snap-align: center;
+                margin-right: 5px;
+            }
+
+            .gallery-item:last-child {
+                margin-left: 5px;
+            }
+
+            .gallery-video {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 16px;
+            }
+
+            .gallery-overlay {
+                padding: 8px;
+                font-size: 14px;
+                background: rgba(0, 0, 0, 0.6);
+                backdrop-filter: blur(5px);
+                border-radius: 0 0 16px 16px;
+            }
+
+            .gallery-overlay h3 {
+                font-size: 14px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 100%;
+            }
+
+            /* Hide scrollbar for cleaner look on some browsers */
+            .gallery-scroll::-webkit-scrollbar {
+                height: 4px;
+            }
+
+            .gallery-scroll::-webkit-scrollbar-track {
+                background: #f0f0f0;
+                border-radius: 10px;
+            }
+
+            .gallery-scroll::-webkit-scrollbar-thumb {
+                background: var(--primary-color);
+                border-radius: 10px;
+            }
+        }
+
+        /* Small mobile devices */
+        @media (max-width: 480px) {
+            .gallery-item {
+                flex: 0 0 90%;
+                max-width: 280px;
+            }
+
+            .gallery-overlay h3 {
+                font-size: 13px;
+            }
+        }
+
+        /* Landscape mode on mobile */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .gallery-item {
+                flex: 0 0 50%;
+                max-width: 300px;
+                aspect-ratio: 16/9;
+            }
+        }
+
+        /* Tablet devices */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .gallery-item {
+                flex: 0 0 45%;
+                max-width: 350px;
+            }
+        }
+
+        /* Improve touch scrolling indicators */
+        .gallery-scroll {
+            scroll-behavior: smooth;
+        }
+
+        /* Add fade edges to indicate more content */
+        .gallery-wrapper {
+            position: relative;
+        }
+
+        .gallery-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 30px;
+            background: linear-gradient(to left, transparent, rgba(255,255,255,0.1));
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 30px;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.1));
+            pointer-events: none;
+            z-index: 2;
+            opacity: 1;
+        }
+
+        /* Show fade effect only when there's more content to scroll */
+        .gallery-wrapper:not(.at-start)::after {
+            opacity: 1;
+        }
+
+        .gallery-wrapper.at-end::before {
+            opacity: 0;
+        }
+
+
+
+        /* Packages Mobile Responsive */
+        @media (max-width: 768px) {
+            .packages-grid {
+                grid-template-columns: 1fr !important; /* Force single column on mobile */
+                gap: 25px;
+                padding: 0 15px;
+            }
+
+            .package-card {
+                width: 100%;
+                max-width: 400px;
+                margin: 0 auto;
+                padding: 30px 20px;
+            }
+
+            .package-card.diamond {
+                transform: scale(1) !important; /* Remove scaling on mobile */
+                order: -1; /* Bring diamond package to top if desired */
+                border: 2px solid var(--secondary-color);
+            }
+
+            .package-card.diamond:hover {
+                transform: scale(1.02) !important;
+            }
+
+            .package-name {
+                font-size: 1.8rem;
+            }
+
+            .package-features li {
+                font-size: 0.95rem;
+                padding-bottom: 12px;
+                margin-bottom: 12px;
+            }
+
+            .price-note {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Small mobile devices */
+        @media (max-width: 480px) {
+            .packages-grid {
+                padding: 0 10px;
+            }
+
+            .package-card {
+                padding: 25px 15px;
+            }
+
+            .package-name {
+                font-size: 1.6rem;
+            }
+
+            .package-features li {
+                font-size: 0.9rem;
+                gap: 8px;
+            }
+        }
+
+
+
+        /* Mobile Header Improvements */
+        @media (max-width: 768px) {
+            header {
+                padding: 12px 20px;
+                width: 95%;
+                top: 10px;
+            }
+
+            .logo img {
+                max-width: 120px !important;
+            }
+
+            .mobile-toggle {
+                display: block !important;
+                font-size: 2rem;
+                cursor: pointer;
+                color: var(--primary-color);
+                z-index: 1001;
+            }
+
+            .nav-links {
+                display: none !important;
+                position: fixed;
+                top: 0;
+                right: 0;
+                width: 80%;
+                max-width: 350px;
+                height: 100vh;
+                background: white;
+                flex-direction: column;
+                padding: 100px 30px 40px;
+                box-shadow: -5px 0 30px rgba(0,0,0,0.15);
+                z-index: 1000;
+                overflow-y: auto;
+                transition: transform 0.3s ease;
+                transform: translateX(100%);
+            }
+
+            .nav-links.active {
+                display: flex !important;
+                transform: translateX(0);
+            }
+
+            .nav-links li {
+                width: 100%;
+                margin-bottom: 25px;
+                text-align: center;
+            }
+
+            .nav-links a {
+                font-size: 1.2rem;
+                display: block;
+                padding: 10px;
+            }
+
+            .nav-links a.btn-primary {
+                display: inline-block;
+                width: auto;
+                margin-top: 20px;
+            }
+
+            /* Overlay when menu is open */
+            body.menu-open::after {
+                content: '';
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                z-index: 999;
+                backdrop-filter: blur(3px);
+            }
+        }
+
+        /* Tablet adjustments */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .nav-links {
+                gap: 20px;
+            }
+            
+            .nav-links a {
+                font-size: 0.95rem;
+            }
+        }
+
+
+        /* Update the packages grid base style */
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+
+        /* Tablet view - 2 columns */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .packages-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 25px;
+            }
+        }
+
+        /* Small tablet / large mobile - 2 columns */
+        @media (min-width: 577px) and (max-width: 768px) {
+            .packages-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 20px;
+            }
+        }
+
+        /* Mobile view - 1 column */
+        @media (max-width: 576px) {
+            .packages-grid {
+                grid-template-columns: 1fr !important;
+                gap: 25px;
+            }
+        }
+
+
+
+        /* Gallery overlay behavior */
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-size: 18px;
+            opacity: 1;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            border-radius: 0 0 16px 16px;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .gallery-item {
+            position: relative;
+            width: 300px;
+            height: 533px;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Hide overlay when video is playing */
+        .gallery-item.playing .gallery-overlay {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* Show overlay on hover when not playing */
+        .gallery-item:not(.playing):hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        /* Mobile specific overlay styles */
+        @media (max-width: 768px) {
+            .gallery-overlay {
+                padding: 8px;
+                font-size: 14px;
+                background: rgba(0, 0, 0, 0.7);
+                backdrop-filter: blur(5px);
+            }
+            
+            .gallery-overlay h3 {
+                font-size: 14px;
+                margin: 0;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            
+            /* Always show overlay when video is paused on mobile */
+            .gallery-item:not(.playing) .gallery-overlay {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+    </style>
+</head>
+
+<script>
+const videos = document.querySelectorAll('.gallery-video');
+
+videos.forEach(video => {
+    video.addEventListener('play', () => {
+        videos.forEach(otherVideo => {
+            if (otherVideo !== video) {
+                otherVideo.pause();
+                otherVideo.currentTime = 0;
+            }
+        });
+    });
+});
+</script>
+
+<script>
+const slider = document.getElementById('gallerySlider');
+const items = document.querySelectorAll('.gallery-item');
+const leftBtn = document.querySelector('.gallery-btn.left');
+const rightBtn = document.querySelector('.gallery-btn.right');
+const currentIndex = document.getElementById('currentIndex');
+const totalCount = document.getElementById('totalCount');
+
+let index = 0;
+totalCount.textContent = items.length;
+
+function updateCounter() {
+    currentIndex.textContent = index + 1;
+}
+
+function slideToIndex() {
+    slider.scrollTo({
+        left: items[index].offsetLeft,
+        behavior: "smooth"
+    });
+}
+
+rightBtn.addEventListener('click', () => {
+    if (index < items.length - 1) {
+        index++;
+        slideToIndex();
+        updateCounter();
+    }
+});
+
+leftBtn.addEventListener('click', () => {
+    if (index > 0) {
+        index--;
+        slideToIndex();
+        updateCounter();
+    }
+});
+
+updateCounter();
+
+slider.addEventListener('scroll', () => {
+    let closest = 0;
+    let minDiff = Infinity;
+
+    items.forEach((item, i) => {
+        const diff = Math.abs(slider.scrollLeft - item.offsetLeft);
+        if (diff < minDiff) {
+            minDiff = diff;
+            closest = i;
+        }
+    });
+
+    index = closest;
+    updateCounter();
+});
+</script>
+
+<body>
+
+    <!-- Header -->
+    <header id="mainHeader" class="glass-panel">
+        <div class="logo">
+            <img src="logo.png" style="display: block; max-width: 150px;" alt="Glow Invite Logo">
+        </div>
+        <nav>
+            <div class="mobile-toggle" id="mobileToggle">☰</div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#about">من نحن</a></li>
+                <li><a href="#services">خدماتنا</a></li>
+                <li><a href="#packages">الباقات</a></li>
+                <li><a href="#gallery">أعمالنا</a></li>
+                <li><a href="#contact" class="btn btn-primary" style="padding: 8px 25px; color: white;">تواصلي معنا</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="hero-content glass-panel reveal">
+            <h1 class="hero-title">أمان، أناقة، وتنظيم <br><span>في ليلتكِ المميزة</span></h1>
+            <p class="hero-slogan">Glow Invite & Weddings Security</p>
+            <p class="hero-slogan">لأن كل دعوة تحكي قصةً إستثنائية</p>
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                <a href="#packages" class="btn btn-primary">اكتشفي باقاتنا</a>
+                <!-- <a href="https://wa.me/1234567890" class="btn btn-whatsapp">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.463 1.065 2.876 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                    تواصلي معنا الآن
+                </a> -->
+                <a href="https://wa.me/97337976812" 
+                target="_blank" 
+                class="btn whatsapp-btn">
+                <i class="fa-brands fa-whatsapp"></i>
+                تواصلي معنا عبر واتساب
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section-padding">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-text reveal">
+                    <h2 class="section-title">قصتنا</h2>
+                    <h3>نحن شريكاتكِ في أجمل لحظاتك</h3>
+                    <p>
+                        في <strong>Glow Invite</strong>، نؤمن أن حفل زفافكِ ليس مجرد مناسبة، بل قصة حب تُروى بتفاصيل متقنة. لذلك نمزج بين رقيّ التصميم ودقة التقنية الحديثة لنمنحك تجربة تليق بحلمك.
+                    </p>
+                    <p>
+                        عبر خدماتنا الحصرية <strong>Glow Invite</strong>، نضمن دخول الضيوف بسلاسة واحترافية، ونحافظ على خصوصيتكِ بأعلى درجات الأمان، ونتولى جميع التنسيقات مع الضيافة و جميع الأقسام لتعيشي يومكِ بكل هدوء واطمئنان.
+                    </p>
+                </div>
+                <div class="about-visual reveal">
+                    <img src="side_image.jpeg" alt="App Interface">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="section-padding">
+        <div class="container">
+            <div class="text-center reveal">
+                <h2 class="section-title">خدماتنا المتميزة</h2>
+                <p class="section-subtitle">حلول شاملة مصممة خصيصاً لراحتك وأمانك</p>
+            </div>
+
+            <div class="services-grid">
+                <!-- Service 1 -->
+                <div class="service-card glass-panel reveal">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24"><path d="M3 3h6v6H3V3zm2 2v2h2V5H5zm8-2h6v6h-6V3zm2 2v2h2V5h-2zM3 13h6v6H3v-6zm2 2v2h2v-2H5zm13-2h3v2h-3v-2zm-3 0h2v2h-2v-2zm-3 4h3v2h-3v-2zm3 0h2v2h-2v-2zm2 2h3v2h-3v-2zm-2-2h2v2h-2v-2zm2-4h3v2h-3v-2zM7 7H5V5h2v2zm12 10h-2v-2h2v2zM3 21h6v-6H3v6zm2-4h2v2H5v-2z"/></svg>
+                    </div>
+                    <h3>الدعوات الإلكترونية <br> بالـ QR Code</h3>
+                    <p>نظام دعوات إلكتروني دقيق و سريع يضمن راحة ضيوفكم و عدم دخول الغير مصرح لهم للمناسبة</p>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="service-card glass-panel reveal">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+                    </div>
+                    <h3>كفرات منع التصوير</h3>
+                    <p>ضمان الخصوصية من خلال منع الضيوف من التصوير و راحة ضيوفكم في إمكانية إستخدام الهاتف لأغراض أخرى بدون عوائق</p>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="service-card glass-panel reveal">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                    </div>
+                    <h3>استلام الدعوات الورقية</h3>
+                    <p>فريقنا يستلم الدعوات التقليدية ويتحقق منها عند دخول الضيوف</p>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="service-card glass-panel reveal">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                    </div>
+                    <h3>كشف الحضور الإلكتروني</h3>
+                    <p>تسجيل دخول الضيوف المصرح لهم بشكل إلكتروني و دقيق</p>
+                </div>
+
+                <!-- Service 5 -->
+                <div class="service-card glass-panel reveal">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+                    </div>
+                    <h3>منع دخول الأطفال</h3>
+                    <p>منع دخول الأطفال الغير مصرح لهم دون أي إحراج للضيوف</p>
+                </div>
+
+                <!-- Service 6 -->
+                <div class="service-card glass-panel reveal">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-4-9H6v4h9V3z"/></svg>
+                    </div>
+                    <h3>طباعة الدعوات</h3>
+                    <p>طباعة إحترافية و راقية لبطاقات الدعوة تليق بمناسبتكم</p>
+                </div>
+
+                <!-- Service 7 -->
+                <div class="service-card glass-panel reveal">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    </div>
+                    <h3>مساعدة العروس الشخصية</h3>
+                    <p>وصيفة خاصة للعروس و لأهل المناسبة لمساعدتهم في جميع مستلزماتهم يوم المناسبة</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Packages Section -->
+    <section id="packages" class="section-padding">
+        <div class="container">
+            <div class="text-center reveal">
+                <h2 class="section-title">ابدئي رحلتكِ باختيار الباقة المثالية</h2>
+                <p class="section-subtitle">تنوع يلبي جميع متطلبات مناسبتكم</p>
+            </div>
+
+            <div class="packages-grid">
+                <!-- Classic -->
+                <div class="package-card glass-panel reveal">
+                    <h3 class="package-name">الكلاسيكية</h3>
+                    <ul class="package-features">
+                        <li>دعوات إلكترونية بالـ QR Code</li>
+                        <li>منع دخول الأطفال</li>
+                        <li>تنسيق زفة العروس</li>
+                        <li>تنسيق دخول الضيافة</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-primary">احجزي الآن</a>
+                    <p class="price-note">*السعر يعتمد على عدد الضيوف و القاعة المختارة للمناسبة</p>
+                </div>
+
+                <!-- Silver -->
+                <div class="package-card glass-panel reveal">
+                    <h3 class="package-name">الفضية</h3>
+                    <ul class="package-features">
+                        <li>كفرات منع التصوير</li>
+                        <li>منع دخول الأطفال</li>
+                        <li>تنسيق زفة العروس</li>
+                        <li>تنسيق دخول الضيافة</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-primary">احجزي الآن</a>
+                    <p class="price-note">*السعر يعتمد على عدد الضيوف و القاعة المختارة للمناسبة</p>
+                </div>
+
+                <!-- Gold -->
+                <div class="package-card glass-panel reveal">
+                    <h3 class="package-name">الذهبية</h3>
+                    <ul class="package-features">
+                        <li>دعوات إلكترونية بالـ QR Code</li>
+                        <li>كفرات منع التصوير</li>
+                        <li>منع دخول الأطفال</li>
+                        <li>تنسيق زفة العروس</li>
+                        <li>تنسيق دخول الضيافة</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-primary">احجزي الآن</a>
+                    <p class="price-note">*السعر يعتمد على عدد الضيوف و القاعة المختارة للمناسبة</p>
+                </div>
+
+                <!-- Diamond -->
+                <div class="package-card glass-panel reveal">
+                    <div class="package-badge">الأكثر شمولاً</div>
+                    <h3 class="package-name">الماسية</h3>
+                    <ul class="package-features">
+                        <li>جميع مميزات الباقة الذهبية</li>
+                        <li>مساعدة العروس من بداية اليوم إلى نهاية المناسبة</li>
+                        <li>مساعدة الأهل في ما بعد المناسبة</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-primary">احجزي الآن</a>
+                    <p class="price-note">*السعر يعتمد على عدد الضيوف و القاعة المختارة للمناسبة</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="section-padding">
+        <div class="container">
+            <div class="text-center reveal">
+                <h2 class="section-title">مقتطفات من أعمالنا</h2>
+                <p class="section-subtitle">
+                    لحظات صنعناها بإبتسامة، وشاركناها مع ضيوفنا بكل حب
+                </p>            
+            </div>
+
+            <div class="gallery-wrapper reveal">
+                <div class="gallery-scroll" id="gallerySlider">
+                    <div class="gallery-item">
+                        <video class="gallery-video" controls preload="metadata">
+                            <source src="Videos/1.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="gallery-overlay">
+                            <h3 style="color:white;">فندق الدبلومات - قاعة الفنار</h3>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item">
+                        <video class="gallery-video" controls preload="metadata">
+                            <source src="Videos/2.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="gallery-overlay">
+                            <h3 style="color:white;">قاعة الحد الأهلية</h3>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item">
+                        <video class="gallery-video" controls preload="metadata">
+                            <source src="Videos/3.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="gallery-overlay">
+                            <h3 style="color:white;">قاعة أنوشة</h3>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item">
+                        <video class="gallery-video" controls preload="metadata">
+                            <source src="Videos/4.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="gallery-overlay">
+                            <h3 style="color:white;">فندق الدبلومات - قاعة السفراء</h3>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item">
+                        <video class="gallery-video" controls preload="metadata">
+                            <source src="Videos/5.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="gallery-overlay">
+                            <h3 style="color:white;">قاعة الحد الأهلية</h3>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item">
+                        <video class="gallery-video" controls preload="metadata">
+                            <source src="Videos/6.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="gallery-overlay">
+                            <h3 style="color:white;">فندق سوليمار</h3>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item">
+                        <video class="gallery-video" controls preload="metadata">
+                            <source src="Videos/7.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="gallery-overlay">
+                            <h3 style="color:white;">حفلة منزلية</h3>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item">
+                        <video class="gallery-video" controls preload="metadata">
+                            <source src="Videos/8.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="gallery-overlay">
+                            <h3 style="color:white;">فندق الموفنبيك</h3>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item">
+                        <video class="gallery-video" controls preload="metadata">
+                            <source src="Videos/9.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="gallery-overlay">
+                            <h3 style="color:white;">قاعة ذا هفن المحرق</h3>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item">
+                        <video class="gallery-video" controls preload="metadata">
+                            <source src="Videos/10.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="gallery-overlay">
+                            <h3 style="color:white;">قاعة البوجيرية</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Socials Section -->
+    <section id="socials" class="section-padding">
+        <div class="container reveal">
+            <h2 class="section-title">تابعونا</h2>
+            <p style="margin-bottom: 20px; color: #555;">كونوا أول من يعرف عن عروضنا الجديدة</p>
+            
+            <div class="social-icons">
+                <a href="https://instagram.com/glowinvite_bh" class="social-icon">
+                    <svg viewBox="0 0 24 24"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/></svg>
+                </a>
+                <a href="https://www.tiktok.com/@glowinvite.bh" class="social-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12.5 3v11.5c0 2.2-1.8 4-4 4s-4-1.8-4-4 1.8-4 4-4c.4 0 .8.1 1.2.2V7.9c-.4-.1-.8-.2-1.2-.2-3.9 0-7 3.1-7 7s3.1 7 7 7 7-3.1 7-7V9.6c1.3 1.1 3 1.8 4.9 1.9V7.3c-2.8-.1-4.9-2.5-4.9-5.3V3h-3z"/></svg>
+                </a>
+                <a href="https://wa.me/97337976812" class="social-icon">
+                    <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.463 1.065 2.876 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-slogan">يومكم المميز .. أمانة لدينا ❤️</div>
+            <p style="margin-bottom: 30px; opacity: 0.9;">للاستفسار والحجز، يرجى التواصل عبر الواتس اب من خلال الرابط أدناه</p>
+            <a href="https://wa.me/97337976812" 
+                target="_blank" 
+                class="btn whatsapp-btn">
+                <i class="fa-brands fa-whatsapp"></i>
+                تواصلي معنا عبر واتساب
+                </a>
+            <p style="margin-top: 50px; font-size: 0.8rem; opacity: 0.6;">© 2026 Glow Invite. Designed with Excellence.</p>
+        </div>
+    </footer>
+
+<script>
+    // Mobile Menu Toggle - Fixed
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.getElementById('mobileToggle');
+    const navLinks = document.getElementById('navLinks');
+    const body = document.body;
+
+    if (mobileToggle && navLinks) {
+        // Toggle menu on hamburger click
+        mobileToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            navLinks.classList.toggle('active');
+            body.classList.toggle('menu-open');
+            
+            // Change icon (optional)
+            if (navLinks.classList.contains('active')) {
+                mobileToggle.textContent = '✕';
+            } else {
+                mobileToggle.textContent = '☰';
+            }
+        });
+
+        // Close menu when clicking on a link
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function() {
+                navLinks.classList.remove('active');
+                body.classList.remove('menu-open');
+                mobileToggle.textContent = '☰';
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!navLinks.contains(event.target) && 
+                !mobileToggle.contains(event.target) && 
+                navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                body.classList.remove('menu-open');
+                mobileToggle.textContent = '☰';
+            }
+        });
+
+        // Close menu on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                body.classList.remove('menu-open');
+                mobileToggle.textContent = '☰';
+            }
+        });
+    }
+
+    // Gallery Video Management
+    const videos = document.querySelectorAll('.gallery-video');
+    
+    videos.forEach(video => {
+        video.addEventListener('play', function() {
+            videos.forEach(otherVideo => {
+                if (otherVideo !== video && !otherVideo.paused) {
+                    otherVideo.pause();
+                }
+            });
+        });
+    });
+
+    // Horizontal scroll with mouse wheel
+    const gallerySlider = document.getElementById('gallerySlider');
+    if (gallerySlider) {
+        gallerySlider.addEventListener('wheel', (e) => {
+            if (e.deltaY !== 0) {
+                e.preventDefault();
+                gallerySlider.scrollLeft += e.deltaY;
+            }
+        });
+    }
+
+    // Scroll position detection for fade effects
+    const galleryWrapper = document.querySelector('.gallery-wrapper');
+    
+    if (gallerySlider && galleryWrapper) {
+        const checkScrollPosition = () => {
+            const isAtStart = gallerySlider.scrollLeft <= 10;
+            const isAtEnd = gallerySlider.scrollLeft + gallerySlider.clientWidth >= gallerySlider.scrollWidth - 10;
+            
+            if (isAtStart) {
+                galleryWrapper.classList.add('at-start');
+            } else {
+                galleryWrapper.classList.remove('at-start');
+            }
+            
+            if (isAtEnd) {
+                galleryWrapper.classList.add('at-end');
+            } else {
+                galleryWrapper.classList.remove('at-end');
+            }
+        };
+
+        gallerySlider.addEventListener('scroll', checkScrollPosition);
+        window.addEventListener('resize', checkScrollPosition);
+        setTimeout(checkScrollPosition, 100);
+    }
+});
+
+// Scroll Reveal Animation (Intersection Observer)
+const revealElements = document.querySelectorAll('.reveal');
+
+const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+        if(entry.isIntersecting) {
+            entry.target.classList.add('active');
+            observer.unobserve(entry.target);
+        }
+    });
+}, {
+    root: null,
+    threshold: 0.15
+});
+
+revealElements.forEach(el => revealObserver.observe(el));
+
+// Header Scroll Effect
+const header = document.getElementById('mainHeader');
+window.addEventListener('scroll', () => {
+    if(window.scrollY > 50) {
+        header.classList.add('scrolled');
+    } else {
+        header.classList.remove('scrolled');
+    }
+});
+</script>
+</body>
+</html>
